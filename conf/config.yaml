@@ -25,7 +25,7 @@ client:
   organization: Org1
 
   logging:
-    level: info
+    level: debug
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
@@ -57,7 +57,7 @@ client:
 
   tlsCerts:
     # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
-    systemCertPool: false
+    systemCertPool: true
 
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
@@ -159,6 +159,50 @@ orderers:
       # Certificate location absolute path
       path: /Users/kaichen/Documents/projects/fabric-connector/conf/crypto-config/ordererOrganizations/sm.orderer/tlsca/tlsca.sm.orderer-cert.pem #绝对路径
 
+  orderer1.sm.orderer: #修改成对应的节点域名，从页面获取
+    # [Optional] Default: Infer from hostname
+    url: orderer1.sm.orderer:32146 #修改成对应的节点域名，从页面获取，端口不需要修改
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      ssl-target-name-override: orderer1-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /Users/kaichen/Documents/projects/fabric-connector/conf/crypto-config/ordererOrganizations/sm.orderer/tlsca/tlsca.sm.orderer-cert.pem #绝对路径
+
+  orderer2.sm.orderer: #修改成对应的节点域名，从页面获取
+    # [Optional] Default: Infer from hostname
+    url: orderer2.sm.orderer:32430 #修改成对应的节点域名，从页面获取，端口不需要修改
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      ssl-target-name-override: orderer2-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: /Users/kaichen/Documents/projects/fabric-connector/conf/crypto-config/ordererOrganizations/sm.orderer/tlsca/tlsca.sm.orderer-cert.pem #绝对路径
+
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
@@ -208,6 +252,14 @@ entityMatchers:
       urlSubstitutionExp: 39.107.82.218:32732 #修改成对应的访问地址，从页面获取，ip:port形式，将访问地址中的grpcs://去掉
       sslTargetOverrideUrlSubstitutionExp: orderer0-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
       mappedHost: orderer0.sm.orderer #修改成对应的节点域名，从页面获取
+    - pattern: (\w*)orderer1.sm.orderer(\w*) #修改成对应的节点域名，从页面获取
+      urlSubstitutionExp: 39.107.82.218:32146 #修改成对应的访问地址，从页面获取，ip:port形式，将访问地址中的grpcs://去掉
+      sslTargetOverrideUrlSubstitutionExp: orderer1-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
+      mappedHost: orderer1.sm.orderer #修改成对应的节点域名，从页面获取
+    - pattern: (\w*)orderer2.sm.orderer(\w*) #修改成对应的节点域名，从页面获取
+      urlSubstitutionExp: 39.107.82.218:32430 #修改成对应的访问地址，从页面获取，ip:port形式，将访问地址中的grpcs://去掉
+      sslTargetOverrideUrlSubstitutionExp: orderer2-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
+      mappedHost: orderer2.sm.orderer #修改成对应的节点域名，从页面获取
 
 #  certificateAuthorities:
 #    - pattern: (\w*)ca0(\w*)

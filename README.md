@@ -4,7 +4,7 @@
 
 ## 预装软件
 
-- Go 1.14+ installation or later
+- Go 1.14.3 以及以下版本
 
 ## 配置
 
