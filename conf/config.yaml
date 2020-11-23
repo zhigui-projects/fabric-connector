@@ -29,7 +29,7 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: ${GOPATH}/src/fabric-connector/conf/crypto-config
+    path: /Users/kaichen/Documents/projects/fabric-connector/conf/crypto-config #配置绝对路径
 
   # Some SDKs support pluggable KV stores, the properties under "credentialStore"
   # are implementation specific
@@ -50,14 +50,14 @@ client:
       enabled: true
       default:
         provider: "SW"
-      hashAlgorithm: "SM3" # 非国密使用"SHA2"
-      algorithm: "SM2" # 可选的，只有在启用国密是需要配置，非国密不需要配置
+      hashAlgorithm: "SM3"
+      algorithm: "SM2"
       softVerify: true
       level: 256
 
   tlsCerts:
     # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
-    systemCertPool: true
+    systemCertPool: false
 
     # [Optional]. Client key and cert for TLS handshake with peers and orderers
     client:
@@ -65,9 +65,9 @@ client:
         path:
       cert:
         path:
-tls:
-  guomi:
-    com:
+#tls:
+#  guomi:
+#    com:
 #
 # [Optional]. But most apps would have this section so that channel objects can be constructed
 # based on the content below. If an app is creating channels, then it likely will not need this
@@ -76,7 +76,7 @@ tls:
 channels:
   #[Required if _default not defined; Optional if _default defined].
   # name of the channel
-  mychannel:
+  smchan: #修改成对应的通道名，从页面获取
 
     # list of orderers designated by the application to use for transactions on this
     # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
@@ -89,7 +89,7 @@ channels:
     #[Required if _default peers not defined; Optional if _default peers defined].
     # list of peers from participating orgs
     peers:
-      peer0.peer.guomi.com:
+      peer0.sm.peer: #修改成对应的节点域名，从页面获取
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -114,14 +114,14 @@ channels:
 #
 organizations:
   Org1:
-    mspid: peer-guomiMSP
+    mspid: sm-peerMSP #修改成组织的MSPID，从页面获取
 
     # This org's MSP store (absolute path or relative to client.cryptoconfig)
-    cryptoPath: peerOrganizations/peer.guomi.com/users/Admin@peer.guomi.com/msp
+    cryptoPath: peerOrganizations/sm.peer/users/smzb@sm.peer/msp
     #    cryptoPath: peerOrganizations/org1.example.com/users/{username}@org1.example.com/msp
 
     peers:
-      - peer0.peer.guomi.com
+      - peer0.sm.peer #修改成对应的节点域名，从页面获取
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -137,14 +137,14 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer0.orderer.guomi.com:
+  orderer0.sm.orderer: #修改成对应的节点域名，从页面获取
     # [Optional] Default: Infer from hostname
-    url: orderer0.orderer.guomi.com:7050
+    url: orderer0.sm.orderer:7050 #修改成对应的节点域名，从页面获取，端口不需要修改
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer0-orderer-guomi-com.orderer-guomi-com.svc.cluster.local
+      ssl-target-name-override: orderer0-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -157,20 +157,20 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/fabric-connector/conf/crypto-config/ordererOrganizations/orderer.guomi.com/tlsca/tlsca.example.com-cert.pem
+      path: /Users/kaichen/Documents/projects/fabric-connector/conf/crypto-config/ordererOrganizations/sm.orderer/tlsca/tlsca.sm.orderer-cert.pem #绝对路径
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  peer0.peer.guomi.com:
+  peer0.sm.peer: #修改成对应的节点域名，从页面获取
     # this URL is used to send endorsement and query requests
     # [Optional] Default: Infer from hostname
-    url: peer0.peer.guomi.com:7051
+    url: peer0.sm.peer:7051 #修改成对应的节点域名，从页面获取，端口不需要修改
 
     grpcOptions:
-      ssl-target-name-override: peer0-peer-guomi-com.peer-guomi-com.svc.cluster.local
+      ssl-target-name-override: peer0-sm-peer.sm-peer.svc.cluster.local #修改成对应的证书域名，从页面获取
       # These parameters should be set in coordination with the keepalive policy on the server,
       # as incompatible settings can result in closing of connection.
       # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
@@ -183,7 +183,7 @@ peers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: ${GOPATH}/src/fabric-connector/conf/crypto-config/peerOrganizations/peer.guomi.com/users/Admin@peer.guomi.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+      path: /Users/kaichen/Documents/projects/fabric-connector/conf/crypto-config/peerOrganizations/sm.peer/users/smzb@sm.peer/msp/tlscacerts/tlsca.sm.peer-cert.pem
 
   # EntityMatchers enable substitution of network hostnames with static configurations
   # so that properties can be mapped. Regex can be used for this purpose
@@ -197,17 +197,17 @@ peers:
 #entityMatchers:
 entityMatchers:
   peer:
-    - pattern: (\w*)peer0.peer.guomi.com(\w*)
-      urlSubstitutionExp: localhost:30001
-      eventUrlSubstitutionExp: localhost:7053 # 可忽略
-      sslTargetOverrideUrlSubstitutionExp: peer0-peer-guomi-com.peer-guomi-com.svc.cluster.local
-      mappedHost: peer0.peer.guomi.com
+    - pattern: (\w*)peer0.sm.peer(\w*)  #修改成对应的节点域名，从页面获取
+      urlSubstitutionExp: 39.107.82.218:32327  #修改成对应的访问地址，从页面获取，ip:port形式，将访问地址中的grpcs://去掉
+      #eventUrlSubstitutionExp: localhost:7053 # 可忽略
+      sslTargetOverrideUrlSubstitutionExp: peer0-sm-peer.sm-peer.svc.cluster.local #修改成对应的证书域名，从页面获取
+      mappedHost: peer0.sm.peer #修改成对应的节点域名，从页面获取
 
   orderer:
-    - pattern: (\w*)orderer0.orderer.guomi.com(\w*)
-      urlSubstitutionExp: localhost:30002
-      sslTargetOverrideUrlSubstitutionExp: orderer0-orderer-guomi-com.orderer-guomi-com.svc.cluster.local
-      mappedHost: orderer0.orderer.guomi.com
+    - pattern: (\w*)orderer0.sm.orderer(\w*) #修改成对应的节点域名，从页面获取
+      urlSubstitutionExp: 39.107.82.218:32732 #修改成对应的访问地址，从页面获取，ip:port形式，将访问地址中的grpcs://去掉
+      sslTargetOverrideUrlSubstitutionExp: orderer0-sm-orderer.sm-orderer.svc.cluster.local #修改成对应的证书域名，从页面获取
+      mappedHost: orderer0.sm.orderer #修改成对应的节点域名，从页面获取
 
 #  certificateAuthorities:
 #    - pattern: (\w*)ca0(\w*)
