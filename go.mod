@@ -21,9 +21,9 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.6.1
 	github.com/sykesm/zap-logfmt v0.0.3 // indirect
-	github.com/zhigui-projects/gm-crypto v0.0.0 // indirect
-	github.com/zhigui-projects/gm-plugins v0.0.0 // indirect
-	github.com/zhigui-projects/http v0.0.0 // indirect
+	github.com/zhigui-projects/gm-crypto latest // indirect
+	github.com/zhigui-projects/gm-plugins latest // indirect
+	github.com/zhigui-projects/http latest // indirect
 	go.uber.org/zap v1.15.0 // indirect
 	golang.org/x/tools v0.0.0-20200813231717-0a73ddcff9b8 // indirect
 	gopkg.in/yaml.v2 v2.2.6
